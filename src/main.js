@@ -12,6 +12,8 @@ Vue.use(Router)
 
 import Home from './components/Home.vue'
 import ProfileComponent from './components/ProfileComponent.vue' 
+import LoginComponent from './components/LoginComponent.vue' 
+
 
 var router= new Router({
   routes: [
@@ -24,6 +26,11 @@ var router= new Router({
       path: '/profile',
       name: 'ProfileComponent',
       component: ProfileComponent
+    },
+    {
+      path: '/login',
+      name: 'login',
+      component: LoginComponent
     }
   ]
 })

@@ -2,7 +2,7 @@
 <div class="hello">
       <HeaderComponent />
 
-  <h1>Profile Screen</h1>
+  <h1>Login Screen</h1>
 
 </div>
 </template>
