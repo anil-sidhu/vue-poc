@@ -1,21 +1,14 @@
 <template>
   <div id="app">
-     <HeaderComponent msg="Header"  />
-    <HelloWorld msg="Listing"/>
-    
+    <nav>
+    </nav>
+    <router-view />
   </div>
 </template>
- 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-import HeaderComponent from './components/HeaderComponent.vue'
 
 export default {
   name: 'app',
-  components: {
-    HelloWorld,
-    HeaderComponent
-  }
 }
 </script>
 
@@ -28,4 +21,3 @@ export default {
   color: #2c3e50;
 }
 </style>
-  

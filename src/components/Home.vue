@@ -1,5 +1,6 @@
 <template>
   <div class="hello">
+    <HeaderComponent />
     <h1>{{ msg }}</h1>
     <input type="text" v-model="result">
     <button v-on:click="fetchResult">Show</button>
@@ -11,11 +12,15 @@
 
 <script>
 const axios = require('axios');
+import HeaderComponent from './HeaderComponent.vue'
 
 export default {
   name: 'HelloWorld',
   props: {
     msg: String
+  },
+  components: {
+    HeaderComponent,
   },
   data: function() {
     return {
