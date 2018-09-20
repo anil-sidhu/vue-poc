@@ -60,29 +60,20 @@ export default {
         submit() {
             console.warn("name", this.name, this.password)
 
-            // Just add in this line
-            Vue.googleAuth().directAccess()
+            axios.get('http://localhost:3004/user/7')
+                .then((response) => {
+                    // handle success
 
-            Vue.googleAuth().signIn(function (googleUser) {
-                // things to do when sign-in succeeds
-                console.warn("googleUser",googleUser.w3.U3)
-            }, function (error) {
-                console.warn("googleUser error",error)
-            })
+                    if (response.status == 200) {
+                        console.warn("response inside", response.status)
+                        this.$router.push('/')
 
-            // axios.get('http://localhost:3004/user/7')
-            //     .then((response) => {
-            //         // handle success
-
-            //         if (response.status == 200) {
-            //             console.warn("response inside", response.status)
-
-            //         }
-            //     })
-            //     .catch(function(error) {
-            //         // handle error
-            //         this.items.data = "Some issue "
-            //     })
+                    }
+                })
+                .catch(function (error) {
+                    // handle error
+                    this.items.data = "Some issue "
+                })
         },
 
     },
