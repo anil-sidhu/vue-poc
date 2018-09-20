@@ -1,64 +1,65 @@
 <template>
-    <div class="hello">
-        <HeaderComponent />
-        <br>
-        <h1>Maps</h1>
+<div class="hello">
+    <HeaderComponent />
+    <br>
+    <h1>Maps</h1>
+    <GmapMap :center="{
+                    lat: 28.4595,
+                    lng: 77.0266
+                }" :zoom="7" map-type-id="terrain" style="width: 600px; height: 400px">
+        <GmapMarker :key="index" v-for="(m, index) in markers" :icon="{ url: require('../assets/mark.png'),  // scaled size
+    }" :zoom="16" :position="{
+                    lat: 28.4595,
+                    lng: 77.0266
+                }" :clickable="false" :draggable="false" @click="center=m.position" />
 
-        <facebook-login class="button" appId="2175298476045913" @login="onLogin" @logout="onLogout" @sdk-loaded="sdkLoaded">
-        </facebook-login>
-    </div>
+    </GmapMap>
+</div>
 </template>
 
 <script>
 import HeaderComponent from './HeaderComponent.vue'
-
+import * as VueGoogleMaps from 'vue2-google-maps'
 import Vue from 'vue'
 import facebookLogin from 'facebook-login-vuejs';
 
+Vue.use(VueGoogleMaps, {
+    load: {
+        key: 'AIzaSyDPnu2gliYe2mt5ZC5oX-J5JT6C9qhAO2c',
+        libraries: 'places', // This is required if you use the Autocomplete plugin
+    },
+
+})
 export default {
     name: 'HelloWorld',
     props: {
         msg: String
     },
-    data() {
-        return {
-            idImage, loginImage, mailImage, faceImage,
-            isConnected: false,
-            name: '',
-            email: '',
-            personalID: '',
-            FB: undefined
-        }
-    },
     components: {
         HeaderComponent,
         facebookLogin
     },
-    methods: {
-        getUserData() {
-            console.warn("jack")
-            this.FB.api('/me', 'GET', { fields: 'id,name,email' },
-                userInformation => {
-                    console.warn("jack", userInformation)
-                    this.personalID = userInformation.id;
-                    this.email = userInformation.email;
-                    this.name = userInformation.name;
-                }
-            )
-        },
-        sdkLoaded(payload) {
-            this.isConnected = payload.isConnected
-            this.FB = payload.FB
-            if (this.isConnected) this.getUserData()
-        },
-        onLogin() {
-            this.isConnected = true
-            this.getUserData()
-        },
-        onLogout() {
-            this.isConnected = false;
+    data: function () {
+        return {
+            markers: {
+                lat: 28.4595,
+                lng: 77.0266
+            }
         }
+    },
+    mounted() {
+        // At this point, the child GmapMap has been mounted, but
+        // its map has not been initialized.
+        // Therefore we need to write mapRef.$mapPromise.then(() => ...)
+
+        // this.$refs.mapRef.$mapPromise.then((map) => {
+        //     map.panTo({
+        //         lat: 1.38,
+        //         lng: 103.80
+        //     })
+        // })
     }
+
 }
 </script>
 
