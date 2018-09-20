@@ -13,6 +13,7 @@ Vue.use(Router)
 import Home from './components/Home.vue'
 import ProfileComponent from './components/ProfileComponent.vue' 
 import LoginComponent from './components/LoginComponent.vue' 
+import MapComponent from './components/MapComponent.vue' 
 
 
 var router= new Router({
@@ -31,6 +32,11 @@ var router= new Router({
       path: '/login',
       name: 'login',
       component: LoginComponent
+    },
+    {
+      path:'/map',
+    name:'map',
+    component:MapComponent
     }
   ]
 })
