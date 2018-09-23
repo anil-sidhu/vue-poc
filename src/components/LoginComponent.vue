@@ -1,93 +1,76 @@
 <template>
-    <div class="hello">
-        <HeaderComponent />
-        <br>
-        <br>
-        <br>
-        <h1>Login Screen</h1>
-        <b-row class="justify-content-md-center">
-            <b-col sm="2">
-                <b-form-group>
-                    <b-form-input v-model="name" type="text" placeholder="Enter your name"></b-form-input>
-                </b-form-group>
-            </b-col>
-            <b-col sm="2">
-                <b-form-group>
-                    <b-form-input v-model="password" type="password" placeholder="Enter your name"></b-form-input>
-                </b-form-group>
-            </b-col>
-            <b-col sm="1">
-                <b-button v-on:click="submit">
-                    Login
-                </b-button>
-
-            </b-col>
-        </b-row>
-        <p>{{name}}</p>
-    </div>
+  <div id="app">
+    <h1>Login with Facebook</h1>
+    <facebook-login class="button"
+      appId="326022817735322"
+      @login="onLogin"
+      @logout="onLogout"
+      @sdk-loaded="sdkLoaded">
+    </facebook-login>
+  </div>
 </template>
+<script> 
+import Vue from 'vue'
+import facebookLogin from 'facebook-login-vuejs';
+ 
 
-<script>
-const axios = require('axios');
-import HeaderComponent from './HeaderComponent.vue'
 export default {
-    name: 'HelloWorld',
-    props: {
-        msg: String
-    },
-    components: {
-        HeaderComponent,
-    },
-    data: function() {
-        return {
-            result: "test",
-            password: "",
-            name: "",
-            items: [{
-                data: 'Loading...'
-            },
-
-            ]
+  name: "app",
+  components: { facebookLogin},
+  data(){
+    return{
+      idImage, loginImage, mailImage, faceImage,
+      isConnected: false,
+      name: '',
+      email: '',
+      personalID: '',
+      FB: undefined
+    }
+  },
+  methods: { 
+  getUserData() {
+      this.FB.api('/me', 'GET', { fields: 'id,name,email' },
+        userInformation => {
+          console.warn("data api",userInformation)
+          this.personalID = userInformation.id;
+          this.email = userInformation.email;
+          this.name = userInformation.name;
         }
+      )
     },
-    methods: {
-        submit() {
-            console.warn("name", this.name, this.password)
-            axios.get('http://localhost:3004/user/7')
-                .then((response) => {
-                    // handle success
-
-                    if (response.status == 200) {
-                        console.warn("response inside", response.status)
-                            this.$router.push({ name: 'profile', query: { redirect: '/profile' } });
-
-                    }
-                })
-                .catch(function(error) {
-                    // handle error
-                    this.items.data = "Some issue "
-                })
-        },
-
+    sdkLoaded(payload) {
+      this.isConnected = payload.isConnected
+      this.FB = payload.FB
+      if (this.isConnected) this.getUserData()
     },
-
+    onLogin() {
+      this.isConnected = true
+      this.getUserData()
+    },
+    onLogout() {
+      this.isConnected = false;
+    }
+  }
 }
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-
-<style scoped>
-h3 {
-    margin: 40px 0 0;
+<style>
+#app {
+  font-family: "Avenir", Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  color: #2c3e50;
+  margin-top: 60px;
 }
-
-ul {
-    list-style-type: none;
-    padding: 0;
+.footer {
+  position: absolute;
+  background: #ccc;
+  margin: 0;
+  bottom: 0;
+  width: 100%;
 }
-
-li {
-    display: inline-block;
-    margin: 0 10px;
+body {
+  margin: 0;
 }
 </style>
